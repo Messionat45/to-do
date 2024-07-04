@@ -13,10 +13,10 @@ const Signup = () => {
         <h2>Sign Up</h2>
     <form action="">
     <div><label htmlFor="">Name: </label>
-    <input type="text" placeholder='Enter youe Name'/></div>
+    <input type="text" placeholder='Enter your Name'/></div>
 
     <div><label htmlFor="">Email: </label>
-    <input type="text" placeholder='Enter youe Email'/></div>
+    <input type="text" placeholder='Enter your Email'/></div>
 
     <div><label htmlFor="">Password: </label>
     <input type="password" placeholder='Enter your Password'/></div>
