@@ -8,7 +8,7 @@ const Signup = () => {
         navigate('/login');
     };
 
-  return (
+   return (
     <div>
         <h2>Sign Up</h2>
     <form action="">
