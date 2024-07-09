@@ -2,7 +2,7 @@
 
 ### `Your Todos`
 
-[click Me](https://to-do-45.onrender.com/)
+[Live Project](https://to-do-45.onrender.com/)
 <!-- for link 
 [click here](https://google.com)
 ##

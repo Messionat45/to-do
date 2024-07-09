@@ -1,4 +1,5 @@
 import React from 'react'
+import Delete from '../Icon/Delete';
 import { useState } from 'react'
 
 const Todo = () => {
@@ -30,9 +31,6 @@ const dueLater = todos.filter(todo => todo.date > today);
 const overDue = todos.filter(todo => todo.date < today);
 
 
-
-
-
   return (
     <div>
         <h2>Your To-Do's</h2>
@@ -43,8 +41,7 @@ const overDue = todos.filter(todo => todo.date < today);
           value={todo} 
           onChange={handleTodo}/>
 
-          <input type="date" 
-          value={dueDate} 
+          <input type="date"           value={dueDate} 
           onChange={handleDate}/>
           
           <button onClick={addTodo}>ADD</button>
@@ -54,9 +51,18 @@ const overDue = todos.filter(todo => todo.date < today);
           <div>
             <h3>Due Later</h3>
             <ul>
+              <div>
               { dueLater.map((item,index) => (
-                <li key={index}>{item.text}</li>
-            ) )}    
+                <li key={index}>
+                   <div className='flex-container'>
+                   <input type="checkbox" />
+                  {item.text}
+             
+                <Delete />
+                </div>
+                </li>
+            ) )} 
+            </div>   
             </ul>
           </div>
 
@@ -64,7 +70,17 @@ const overDue = todos.filter(todo => todo.date < today);
             <h3>Due Today</h3>
             <ul>
               { dueToday.map((item, index) => (
-                <li key={index}>{item.text}</li>))}   
+                <li key={index}>
+                  
+                  <div className='flex-container'>
+                    
+                     <input type="checkbox" />
+                  {item.text}
+                
+      
+                 <Delete/>
+                 </div>
+                 </li>))}   
             </ul>
           </div>
        
@@ -72,7 +88,16 @@ const overDue = todos.filter(todo => todo.date < today);
             <h3>Over Due</h3>
             <ul>
               {overDue.map((item,index) => (
-                <li key={index}> {item.text}</li>))}
+                <li className='list-item' 
+                key={index}> 
+                <div className='flex-container'> 
+                <input type="checkbox" />               
+                  {item.text}
+               
+                <Delete/>
+                </div>
+
+                 </li>))}
             </ul>
           </div>
        </div>
@@ -82,3 +107,5 @@ const overDue = todos.filter(todo => todo.date < today);
 }
 
 export default Todo
+
+

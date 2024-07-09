@@ -1,5 +1,17 @@
+.delete-logo{
+  height: 17px;
+  width: 17px;
+
+}
+.flex-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .todo-container li{
 list-style:none;
+
 }
 .btn{
   display:flex;
