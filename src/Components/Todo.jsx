@@ -8,6 +8,7 @@ const Todo = () => {
   const [todos, setTodos] = useState([]);
   const [idCount, setIdCount] = useState(0);
 
+
   const handleTodo = (e) => {
     setTodo(e.target.value);
   }
@@ -19,16 +20,26 @@ const Todo = () => {
   const addTodo = () => {
     if(todo && dueDate){
     setTodos([...todos,{id: idCount, text:todo, date: dueDate, completed: false}])
+    // setTodos([...todos,{id: idCount, text:todo, date: dueDate}])
     setTodo('');
     setDueDate('');
     setIdCount(idCount+1);
+    
   }
     }
+    console.log(todos);
 
     const deleteTodo = (id) => {
       setTodos(todos.filter( todo => todo.id !== id ))
     }
 
+    const toggleComplete = (id) => {
+      setTodos(
+        todos.map((todo) =>
+          todo.id === id ? { ...todo, completed: !todo.completed } : todo
+        )
+      );
+    };
   
 
 
@@ -62,11 +73,13 @@ const overDue = todos.filter(todo => todo.date < today);
             <ul>
               <div>
               { dueLater.map((item,index) => (
-                <li key={index}>
+                <li key={item.id}>
                    <div className='flex-container'>
                    <input type="checkbox" 
+                    onChange={() => toggleComplete(item.id)}
                    />
                   {item.text}
+                   {/* {item.date} */}
                 <Delete onDelete={() => deleteTodo(item.id)}/>
                 </div>
                 </li>
@@ -79,12 +92,13 @@ const overDue = todos.filter(todo => todo.date < today);
             <h3>Due Today</h3>
             <ul>
               { dueToday.map((item, index) => (
-                <li key={index}>
+                <li key={item.id}>
                   <div className='flex-container'>
                      <input type="checkbox" 
+                      onChange={() => toggleComplete(item.id)}
                      />
                   {item.text}
-                
+                 {/* {item.date} */}
       
                  <Delete onDelete={() => deleteTodo(item.id)}/>
                  </div>
@@ -97,13 +111,13 @@ const overDue = todos.filter(todo => todo.date < today);
             <ul>
               {overDue.map((item,index) => (
                 <li className='list-item' 
-                key={index}> 
+                key={item.id}> 
                 <div className='flex-container'> 
                 <input type="checkbox" 
-                
+                  onChange={() => toggleComplete(item.id)}
                 />             
                   {item.text}
-               
+                  {/* {item.date} */}
                 <Delete onDelete={() => deleteTodo(item.id)}/>
                 </div>
 
@@ -117,5 +131,6 @@ const overDue = todos.filter(todo => todo.date < today);
 }
 
 export default Todo
+
 
 
