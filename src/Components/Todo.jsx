@@ -1,6 +1,7 @@
 import React from 'react'
 import Delete from '../Icon/Delete';
 import { useState } from 'react'
+import axios from 'axios'  
 
 const Todo = () => {
   const [todo, setTodo] = useState('');
