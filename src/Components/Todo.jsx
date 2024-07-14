@@ -1,14 +1,28 @@
 import React from 'react'
 import Delete from '../Icon/Delete';
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'  
 
 const Todo = () => {
   const [todo, setTodo] = useState('');
   const [dueDate, setDueDate] = useState('');
   const [todos, setTodos] = useState([]);
-  const [idCount, setIdCount] = useState(0);
+  const [idCount, setIdCount] = useState(5);
 
+  //fetching the todos 
+  useEffect(() => {
+    async function getAllTodos(){
+      try{
+        const fetchedTodos = await axios.get("http://127.0.0.1:8000/api/todos/")
+        console.log(fetchedTodos.data)
+        setTodos(fetchedTodos.data)
+      }
+      catch(error){
+        console.log(error)
+      }
+    }
+    getAllTodos()
+  },[])
 
   const handleTodo = (e) => {
     setTodo(e.target.value);
@@ -20,15 +34,17 @@ const Todo = () => {
 
   const addTodo = () => {
     if(todo && dueDate){
-    setTodos([...todos,{id: idCount, text:todo, date: dueDate, completed: false}])
+    setTodos([...todos,{id: idCount, title:todo, date: dueDate, completed: false}])
     // setTodos([...todos,{id: idCount, text:todo, date: dueDate}])
     setTodo('');
     setDueDate('');
     setIdCount(idCount+1);
     
   }
-    }
-    console.log(todos);
+}
+
+
+
 
     const deleteTodo = (id) => {
       setTodos(todos.filter( todo => todo.id !== id ))
@@ -79,7 +95,7 @@ const overDue = todos.filter(todo => todo.date < today);
                    <input type="checkbox" 
                     onChange={() => toggleComplete(item.id)}
                    />
-                  {item.text}
+                  {item.title}
                    {/* {item.date} */}
                 <Delete onDelete={() => deleteTodo(item.id)}/>
                 </div>
@@ -98,7 +114,7 @@ const overDue = todos.filter(todo => todo.date < today);
                      <input type="checkbox" 
                       onChange={() => toggleComplete(item.id)}
                      />
-                  {item.text}
+                  {item.title}
                  {/* {item.date} */}
       
                  <Delete onDelete={() => deleteTodo(item.id)}/>
@@ -117,7 +133,7 @@ const overDue = todos.filter(todo => todo.date < today);
                 <input type="checkbox" 
                   onChange={() => toggleComplete(item.id)}
                 />             
-                  {item.text}
+                  {item.title}
                   {/* {item.date} */}
                 <Delete onDelete={() => deleteTodo(item.id)}/>
                 </div>
