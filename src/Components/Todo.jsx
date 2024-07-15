@@ -7,14 +7,15 @@ const Todo = () => {
   const [todo, setTodo] = useState('');
   const [dueDate, setDueDate] = useState('');
   const [todos, setTodos] = useState([]);
-  const [idCount, setIdCount] = useState(5);
+  const [idCount, setIdCount] = useState(0);
 
+ 
   //fetching the todos 
   useEffect(() => {
     async function getAllTodos(){
       try{
         const fetchedTodos = await axios.get("http://127.0.0.1:8000/api/todos/")
-        console.log(fetchedTodos.data)
+        // console.log(fetchedTodos.data)
         setTodos(fetchedTodos.data)
       }
       catch(error){
@@ -32,32 +33,62 @@ const Todo = () => {
     setDueDate(e.target.value);
   }
 
-  const addTodo = () => {
+  // inserted todo uisng post
+
+  const addTodo = async (e) => {
+    e.preventDefault()
+    
     if(todo && dueDate){
-    setTodos([...todos,{id: idCount, title:todo, date: dueDate, completed: false}])
-    // setTodos([...todos,{id: idCount, text:todo, date: dueDate}])
+      const newTodo = {
+        title: todo,
+        date: dueDate,
+        completed: false,
+      };
+
+      try {
+        const insertResponse = await axios.post("http://127.0.0.1:8000/api/todos/create/", newTodo)
+    setTodos([...todos,insertResponse.data])
     setTodo('');
     setDueDate('');
     setIdCount(idCount+1);
-    
+  }
+  catch(error){
+    console.log(error);
+  }
   }
 }
 
+ 
 
 
+    const deleteTodo = async (id) => {
 
-    const deleteTodo = (id) => {
+      try { 
+        await axios.delete(`http://localhost:8000/api/todos/${id}/`)
       setTodos(todos.filter( todo => todo.id !== id ))
+      }
+      catch(error){
+        console.log(error);
+      }
     }
 
-    const toggleComplete = (id) => {
+
+    const toggleComplete = async (id) => {
+      try {
+        const completedStatus = todos.find(todo => todo.id === id);
+        const updatedTodo = {...completedStatus, completed: !completedStatus.completed}
+        const updateResponse = await axios.put(`http://localhost:8000/api/todos/${id}/`,updatedTodo)
       setTodos(
         todos.map((todo) =>
-          todo.id === id ? { ...todo, completed: !todo.completed } : todo
+          todo.id === id ? updateResponse.data : todo
         )
       );
+      
+    }
+    catch(error){
+      console.log(error)
+    }
     };
-  
 
 
 const today = new Date().toISOString().slice(0,10);
@@ -66,12 +97,12 @@ const dueToday = todos.filter(todo => todo.date === today);
 const dueLater = todos.filter(todo => todo.date > today);
 const overDue = todos.filter(todo => todo.date < today);
 
-
   return (
     <div>
         <h2>Your To-Do's</h2>
-
         <div>
+      <form onSubmit={addTodo}>
+        
           <input type="text" 
           placeholder='add your Todo' 
           value={todo} 
@@ -81,9 +112,10 @@ const overDue = todos.filter(todo => todo.date < today);
           value={dueDate} 
           onChange={handleDate}/>
           
-          <button onClick={addTodo}>ADD</button>
-
-        <div className='todo-container'>
+          <button>ADD</button>
+       </form> 
+       
+       <div className='todo-container'>
 
           <div>
             <h3>Due Later</h3>
@@ -93,6 +125,7 @@ const overDue = todos.filter(todo => todo.date < today);
                 <li key={item.id}>
                    <div className='flex-container'>
                    <input type="checkbox" 
+                    checked={item.completed}
                     onChange={() => toggleComplete(item.id)}
                    />
                   {item.title}
@@ -112,6 +145,7 @@ const overDue = todos.filter(todo => todo.date < today);
                 <li key={item.id}>
                   <div className='flex-container'>
                      <input type="checkbox" 
+                      checked={item.completed}
                       onChange={() => toggleComplete(item.id)}
                      />
                   {item.title}
@@ -131,6 +165,7 @@ const overDue = todos.filter(todo => todo.date < today);
                 key={item.id}> 
                 <div className='flex-container'> 
                 <input type="checkbox" 
+                 checked={item.completed}
                   onChange={() => toggleComplete(item.id)}
                 />             
                   {item.title}
@@ -145,8 +180,9 @@ const overDue = todos.filter(todo => todo.date < today);
         </div>
     </div>
   )
+  
 }
-
+   
 export default Todo
 
 
