@@ -93,9 +93,10 @@ const Todo = () => {
 
 const today = new Date().toISOString().slice(0,10);
 
-const dueToday = todos.filter(todo => todo.date === today);
-const dueLater = todos.filter(todo => todo.date > today);
-const overDue = todos.filter(todo => todo.date < today);
+const dueToday = todos.filter(todo => todo.date === today && todo.completed === false);
+const dueLater = todos.filter(todo => todo.date > today && !todo.completed);
+const overDue = todos.filter(todo => todo.date < today && todo.completed === false);
+const completedTodo = todos.filter(todo => todo.completed === true);
 
   return (
     <div>
@@ -161,6 +162,26 @@ const overDue = todos.filter(todo => todo.date < today);
             <h3>Over Due</h3>
             <ul>
               {overDue.map((item,index) => (
+                <li className='list-item' 
+                key={item.id}> 
+                <div className='flex-container'> 
+                <input type="checkbox" 
+                 checked={item.completed}
+                  onChange={() => toggleComplete(item.id)}
+                />             
+                  {item.title}
+                  {/* {item.date} */}
+                <Delete onDelete={() => deleteTodo(item.id)}/>
+                </div>
+
+                 </li>))}
+            </ul>
+          </div>
+
+          <div>
+            <h3>Completed Todo</h3>
+            <ul>
+              {completedTodo.map((item,index) => (
                 <li className='list-item' 
                 key={item.id}> 
                 <div className='flex-container'> 
