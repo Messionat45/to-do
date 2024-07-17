@@ -13,8 +13,8 @@ SECRET_KEY = 'django-insecure-pzdbat6@ek6$yr0svj5kw4jlysa3l(1tfh6m8n$qcq4#olvmqr
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['.vercel.app']
+# added .vercel.app for hosted procedure
 
 # Application definition
 
@@ -33,6 +33,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware'
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
